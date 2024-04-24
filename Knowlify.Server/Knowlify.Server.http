@@ -1,0 +1,6 @@
+@Knowlify.Server_HostAddress = http://localhost:5260
+
+GET {{Knowlify.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
