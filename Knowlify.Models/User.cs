@@ -1,12 +1,15 @@
 
+using Microsoft.AspNetCore.Identity;
+
 namespace Knowlify.Data.Models
 {
-    public class User 
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-        public string Email { get; set; }
         public int Credits { get; set; } = 0;
+        public string? ProfilePicture { get; set; }
+        public string? Description { get; set; }
+        public string? City { get; set; }
         public List<Skill> SkillsOffered { get; set; }
         public List<Skill> SkillsWanted { get; set; }
     }

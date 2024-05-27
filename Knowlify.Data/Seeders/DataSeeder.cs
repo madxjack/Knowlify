@@ -31,6 +31,7 @@ namespace Knowlify.Data.Seeders
                 {
                     Name = "John Doe",
                     Email = "test"
+
                 },
                 new User
                 {

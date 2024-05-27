@@ -1,9 +1,11 @@
 ﻿using Knowlify.Data.Models;
+using Knowlify.Infraestructure.Data.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Knowlify.Data.Db
 {
-    public class ApplicationDbContext : DbContext
+    public class ApplicationDbContext : IdentityDbContext<User>
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
@@ -15,10 +17,14 @@ namespace Knowlify.Data.Db
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<User>().HasKey(u => u.Id);
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+
+            //TODO: Acabar de configurar las entidades restantes con sus respectivas configuraciones
+
             modelBuilder.Entity<Skill>().HasKey(s => s.Id);
             modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
             modelBuilder.Entity<Review>().HasKey(r => r.Id);
+            modelBuilder.Entity<Barter>().HasKey(b => b.Id);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SkillsOffered)
@@ -51,10 +57,16 @@ namespace Knowlify.Data.Db
                 .WithMany()
                 .HasForeignKey(r => r.RevieweeId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Barter>()
+                .HasOne(b => b.Transaction)
+                .WithOne(t => t.Barter)
+                .HasForeignKey<Transaction>(t => t.BarterId);
         }
         public DbSet<User> User { get; set; }
         public DbSet<Skill> Skill { get; set; }
         public DbSet<Transaction> Transaction { get; set; }
         public DbSet<Review> Review { get; set; }
+        public DbSet<Barter> Barter { get; set; }
     }
 }

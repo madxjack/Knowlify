@@ -9,6 +9,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Knowlify.Data\Knowlify.Infraestructure.csproj" />
     <ProjectReference Include="..\Knowlify.Models\Knowlify.Models.csproj" />
+    <ProjectReference Include="..\Knowlify.Services\Knowlify.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Abstract\" />
   </ItemGroup>
 
 </Project>
