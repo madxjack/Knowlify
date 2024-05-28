@@ -5,5 +5,6 @@ namespace Knowlify.Infraestructure.Abstract
     public interface IUserRepository : IBaseRepository<User>
     {
         Task<User> Get(string email);
+        Task<User> GetById(string id);
     }
 }

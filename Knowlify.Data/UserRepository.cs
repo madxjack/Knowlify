@@ -17,5 +17,10 @@ namespace Knowlify.Infraestructure
         {
             return await _context.Set<User>().FirstOrDefaultAsync(u => u.Email == email);
         }
+
+        public async Task<User> GetById(string id)
+        {
+            return await _context.Set<User>().FirstOrDefaultAsync(u => u.Id == id);
+        }
     }
 }

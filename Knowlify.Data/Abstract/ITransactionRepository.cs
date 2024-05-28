@@ -1,5 +1,4 @@
-﻿
-using Knowlify.Data.Models;
+﻿using Knowlify.Data.Models;
 
 namespace Knowlify.Infraestructure.Abstract
 {

@@ -4,7 +4,7 @@ namespace Knowlify.Infraestructure.Abstract
 {
     public interface IBarterRepository : IBaseRepository<Barter>
     {
-        Task<IEnumerable<Barter>> GetAllBartersBySkillId(int id);
+        Task<IEnumerable<Barter>> GetAllBySkillId(int id);
     }
 
 }

@@ -1,12 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Knowlify.Domain;
-using Microsoft.Identity.Client;
-using Microsoft.AspNetCore.Authentication;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.Extensions.Logging;
 using Knowlify.Domain.DTOs.User;
 
 namespace Knowlify.Api.Controllers

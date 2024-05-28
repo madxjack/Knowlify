@@ -1,56 +1,55 @@
-import { useEffect, useState } from 'react';
-import './App.css';
-
-interface Forecast {
-    date: string;
-    temperatureC: number;
-    temperatureF: number;
-    summary: string;
-}
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import HomePage from './pages/HomePage'
+import LoginPage from './pages/LoginPage'
+import { Header } from './components/nav/Header'
+// import NavBar from './components/nav/NavBar'
+import RegisterPage from './pages/RegisterPage'
+import Footer from './components/footer/Footer'
+import BarterListPage from './pages/barter/BarterListPage'
+import BarterDetailsPage from './pages/barter/BarterDetailsPage'
+import TransactionListPage from './pages/transaction/TransactionListPage'
+import TransactionDetailsPage from './pages/transaction/TransactionDetailsPage'
+import SkillListPage from './pages/skill/SkillListPage'
+import SkillDetailsPage from './pages/skill/SkillDetailsPage'
+import TestPage from './TestPage'
+import DashboardPage from './pages/DashboardPage'
+import CreateBarterPage from './pages/barter/CreateBarterPage'
+import ProfilePage from './pages/ProfilePage'
+import ProtectedRoutes from './pages/auth/ProtectedRoutes'
 
 function App() {
-    const [forecasts, setForecasts] = useState<Forecast[]>();
-
-    useEffect(() => {
-        populateWeatherData();
-    }, []);
-
-    const contents = forecasts === undefined
-        ? <p><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationreact">https://aka.ms/jspsintegrationreact</a> for more details.</em></p>
-        : <table className="table table-striped" aria-labelledby="tabelLabel">
-            <thead>
-                <tr>
-                    <th>Date</th>
-                    <th>Temp. (C)</th>
-                    <th>Temp. (F)</th>
-                    <th>Summary</th>
-                </tr>
-            </thead>
-            <tbody>
-                {forecasts.map(forecast =>
-                    <tr key={forecast.date}>
-                        <td>{forecast.date}</td>
-                        <td>{forecast.temperatureC}</td>
-                        <td>{forecast.temperatureF}</td>
-                        <td>{forecast.summary}</td>
-                    </tr>
-                )}
-            </tbody>
-        </table>;
-
-    return (
-        <div>
-            <h1 id="tabelLabel">Weather forecast</h1>
-            <p>This component demonstrates fetching data from the server.</p>
-            {contents}
-        </div>
-    );
-
-    async function populateWeatherData() {
-        const response = await fetch('weatherforecast');
-        const data = await response.json();
-        setForecasts(data);
-    }
+  return (
+    <div className="app flex flex-col max-h-screen min-h-screen font-[Circular, -Apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif] text-black/80">
+      <Router>
+        <div className='border-b'>{<Header />}</div>
+        <main className='flex-1 '>
+          <div className='px-10 mx-auto pt-10 pb-10 lg:max-w-screen-xl'>
+            <Routes>
+              <Route path='/' element={<HomePage />} />
+              <Route path='/login' element={<LoginPage />} />
+              <Route path='/register' element={<RegisterPage />} />
+              <Route element={<ProtectedRoutes />}>
+                <Route path='/barters' element={<BarterListPage />} />
+                <Route path='/barter/:id' element={<BarterDetailsPage />} />
+                <Route path='/barter/create' element={<CreateBarterPage />} />
+                <Route path='/transactions' element={<TransactionListPage />} />
+                <Route
+                  path='/transaction/:id'
+                  element={<TransactionDetailsPage />}
+                />
+                <Route path='/skills' element={<SkillListPage />} />
+                <Route path='/skill/:id' element={<SkillDetailsPage />} />
+                <Route path='/dashboard' element={<DashboardPage />} />
+                <Route path='/profile' element={<ProfilePage />} />
+              </Route>
+              <Route path='test' element={<TestPage />} />
+            </Routes>
+          </div>
+        </main>
+        <div className='border-t'>{<Footer />}</div>
+      </Router>
+    </div>
+  )
 }
 
-export default App;
+export default App

@@ -13,7 +13,7 @@ namespace Knowlify.Infraestructure
             this.context = context;
         }
 
-        public async Task<IEnumerable<Barter>> GetAllBartersBySkillId(int id)
+        public async Task<IEnumerable<Barter>> GetAllBySkillId(int id)
         {
             return await context.Barter.Where(b => b.SkillId == id).ToListAsync();
         }

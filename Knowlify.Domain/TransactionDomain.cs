@@ -7,10 +7,14 @@ namespace Knowlify.Domain
     public class TransactionDomain
     {
         public readonly ITransactionRepository transactionRepository;
+        public readonly UserDomain userDomain;
+        public readonly BarterDomain barterDomain;
 
-        public TransactionDomain(ITransactionRepository transactionRepository)
+        public TransactionDomain(ITransactionRepository transactionRepository, UserDomain userDomain, BarterDomain barterDomain)
         {
             this.transactionRepository = transactionRepository;
+            this.userDomain = userDomain;
+            this.barterDomain = barterDomain;
         }
 
         public async Task<TransactionDto> Add(AddTransactionDto transactionRequest)
@@ -24,7 +28,44 @@ namespace Knowlify.Domain
                 Date = DateTime.Now
             };
 
-            await transactionRepository.Add(newTransaction);
+            try
+            {
+                var transactionAdded = await transactionRepository.Add(newTransaction);
+            }
+            catch
+            {
+                throw new Exception("Error adding transaction");
+            }
+
+            User userRequesterUpdated = null;
+            User userProviderUpdated = null;
+            Barter barter = null;
+
+            try
+            {
+                userRequesterUpdated = await userDomain.UpdateCredits(newTransaction.RequesterId, -newTransaction.Credits);
+                userProviderUpdated = await userDomain.UpdateCredits(newTransaction.ProviderId, newTransaction.Credits);
+                barter = await barterDomain.UpdateAfterTransaction(newTransaction.BarterId, newTransaction, "Accepted");
+            }
+            catch
+            {
+                await transactionRepository.Delete(newTransaction);
+                if (userRequesterUpdated != null)
+                {
+                    await userDomain.UpdateCredits(newTransaction.RequesterId, newTransaction.Credits);
+                }
+
+                if (userProviderUpdated != null)
+                {
+                    await userDomain.UpdateCredits(newTransaction.ProviderId, -newTransaction.Credits);
+                }
+
+                if (barter != null)
+                {
+                    await barterDomain.UpdateAfterTransaction(newTransaction.BarterId, newTransaction);
+                }
+                throw new Exception("Error updating user credits");
+            }
 
             return new TransactionDto
             {

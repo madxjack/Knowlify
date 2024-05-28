@@ -91,12 +91,12 @@ namespace Knowlify.Api.Controllers
             }
         }
 
-        [HttpGet("GetAllBartersBySkillId/{skillId}")]
-        public async Task<IActionResult> GetAllBartersBySkillId(int skillId)
+        [HttpGet("GetAllBySkillId/{skillId}")]
+        public async Task<IActionResult> GetAllBySkillId(int skillId)
         {
             try
             {
-                var barters = await barterDomain.GetAllBartersBySkillId(skillId);
+                var barters = await barterDomain.GetAllBySkillId(skillId);
 
                 return Ok(barters);
             }

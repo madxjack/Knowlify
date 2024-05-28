@@ -1,6 +1,7 @@
 ﻿using Knowlify.Data.Models;
 using Knowlify.Domain.DTOs.Barter;
 using Knowlify.Infraestructure.Abstract;
+using System.Runtime.CompilerServices;
 
 namespace Knowlify.Domain
 {
@@ -116,9 +117,9 @@ namespace Knowlify.Domain
             await barterRepository.Delete(barter);
         }
 
-        public async Task<IEnumerable<BarterDto>> GetAllBartersBySkillId(int id)
+        public async Task<IEnumerable<BarterDto>> GetAllBySkillId(int id)
         {
-            var barters = await barterRepository.GetAllBartersBySkillId(id);
+            var barters = await barterRepository.GetAllBySkillId(id);
 
             return barters.Select(barter => new BarterDto
             {
@@ -130,6 +131,21 @@ namespace Knowlify.Domain
                 Credits = barter.Credits,
                 DatePosted = barter.DatePosted
             });
+        }
+
+        public async Task<Barter> UpdateAfterTransaction(int barterId, Transaction transaction, string status = "Pending")
+        {
+            var barter = await barterRepository.Get(barterId);
+
+            if (barter == null)
+            {
+                throw new Exception("Barter not found");
+            }
+
+            barter.Status = status;
+            barter.TransactionId = transaction.Id;
+
+            return await barterRepository.Update(barter);
         }
     }
 }

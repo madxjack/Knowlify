@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Authorization;
 using Knowlify.Domain;
-using Microsoft.Identity.Web.Resource;
+using Knowlify.Data.Models;
+using Knowlify.Domain.DTOs.User;
 
 namespace Knowlify.Api.Controllers
 {
@@ -39,6 +39,20 @@ namespace Knowlify.Api.Controllers
             {
                 var user = await _userDomain.Get(id);
                 return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(ex.Message) { StatusCode = 500 };
+            }
+        }
+
+        [HttpPut("updateBasicProfileInfo")]
+        public async Task<IActionResult> UpdateBasicProfileInfo([FromBody] UserProfileUpdateDto user)
+        {
+            try
+            {
+                var updatedUser = await _userDomain.UpdateBasicProfileInfo(user);
+                return Ok(updatedUser);
             }
             catch (Exception ex)
             {

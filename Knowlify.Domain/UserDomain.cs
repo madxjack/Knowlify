@@ -40,6 +40,7 @@ namespace Knowlify.Domain
 
             var userResponse = new UserLoginResponseDto
             {
+                id = existingUser.Id,
                 JwtToken = token,
                 Email = existingUser.Email,
                 Name = existingUser.Name,
@@ -90,11 +91,6 @@ namespace Knowlify.Domain
 
             return userResponse;
         }   
-
-        public async Task<User> Get(int id)
-        {
-            return await _userRepository.Get(id);
-        }
 
         public async Task<UserDto> Get(string email)
         {
@@ -182,12 +178,81 @@ namespace Knowlify.Domain
 
         public async Task<User> Update(User user)
         {
-            var existingUser = await _userRepository.Get(user.Id);
+            var existingUser = await _userManager.FindByEmailAsync(user.Email);
             if (existingUser == null)
             {
                 throw new Exception("User not found");
             }
+            var result =  await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = string.Join(" ", result.Errors.Select(e => e.Description));
+                throw new Exception("Error updating user: " + errors);
+            }
+
+            return user;
+        }
+
+        public async Task<User> UpdateCredits(string id, int credits)
+        {
+            var user = await _userRepository.GetById(id);
+            if (user == null)
+            {
+                throw new Exception("User not found");
+            }
+            user.Credits += credits;
             return await _userRepository.Update(user);
+        }
+
+        public async Task<UserDto> UpdateBasicProfileInfo (UserProfileUpdateDto user)
+        {
+            if(string.IsNullOrWhiteSpace(user.NewPassword) || string.IsNullOrWhiteSpace(user.OldPassword)) {
+                throw new Exception("Password cannot be empty.");
+            }
+            var existingUser = await _userManager.FindByIdAsync(user.Id);
+            if (existingUser == null)
+            {
+                throw new Exception("User not found");
+            }
+            var result = await _userManager.CheckPasswordAsync(existingUser, user.OldPassword);
+            if (!result)
+            {
+                throw new UnauthorizedAccessException("Invalid old password");
+            }
+            var passwordResult = await _userManager.ChangePasswordAsync(existingUser, user.OldPassword, user.NewPassword);
+            if (!passwordResult.Succeeded)
+            {
+                var errors = string.Join(" ", passwordResult.Errors.Select(e => e.Description));
+                throw new Exception("Error updating password: " + errors);
+            }
+
+            existingUser.Name = user.Name;
+            existingUser.Email = user.Email;
+
+            var resultUpdate =  await _userManager.UpdateAsync(existingUser);
+
+            if (!resultUpdate.Succeeded)
+            {
+                var errors = string.Join(" ", resultUpdate.Errors.Select(e => e.Description));
+                throw new Exception("Error updating user: " + errors);
+            }
+
+
+            var userResponse = new UserDto
+            {
+                Id = existingUser.Id,
+                Email = existingUser.Email,
+                Name = existingUser.Name,
+                Credits = existingUser.Credits,
+                ProfilePicture = existingUser.ProfilePicture,
+                Description = existingUser.Description,
+                City = existingUser.City,
+                SkillsOffered = existingUser.SkillsOffered?.Select(skill => skill.Id).ToList() ?? new List<int>(),
+                SkillsWanted = existingUser.SkillsWanted?.Select(skill => skill.Id).ToList() ?? new List<int>()
+            };
+
+            return userResponse;
         }
     }
 }
