@@ -6,3 +6,10 @@ export interface ITransaction {
   credits: number
   date: string
 }
+
+export interface ITransactionRequest {
+  requesterId: string
+  providerId: string
+  barterId: number
+  credits: number
+}

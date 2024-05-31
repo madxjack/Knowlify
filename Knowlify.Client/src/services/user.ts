@@ -1,5 +1,5 @@
 import { API_ROUTES } from '@/constants/api'
-import { IUser } from '@/interfaces/user'
+import { IUser, User } from '@/interfaces/user'
 
 export const getUsers = async () => {
   const response = await fetch(API_ROUTES.user.all)
@@ -13,12 +13,19 @@ export const getUser = async (id: string) => {
   return data
 }
 
-export const updateUserBasicInfo = async (data: Partial<IUser>) => {
+export const updateUserBasicInfo = async (
+  data: Partial<User>,
+  token: string,
+) => {
+  if (token === '') {
+    throw new Error('No token provided')
+  }
   const response = await fetch(API_ROUTES.user.updateBasicProfileInfo, {
     method: 'PUT',
     body: JSON.stringify(data),
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`,
     },
   })
   return response

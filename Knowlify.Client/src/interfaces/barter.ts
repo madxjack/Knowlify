@@ -5,6 +5,7 @@ export interface IBarter {
   description: string
   status: string
   credits: number
-  transactionId: number
-  datePosted: string
+  imageUrl?: string
+  transactionId?: number
+  datePosted?: string
 }

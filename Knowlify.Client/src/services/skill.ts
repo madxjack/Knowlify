@@ -12,11 +12,12 @@ export const getSkill = async (id: number) => {
   return response
 }
 
-export const addSkill = async (skill: ISkill) => {
+export const addSkill = async (skill: ISkill, jwtToken: string) => {
   const response = await fetch(API_ROUTES.skill.add, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwtToken}`,
     },
     body: JSON.stringify(skill),
   })
@@ -24,11 +25,12 @@ export const addSkill = async (skill: ISkill) => {
   return data
 }
 
-export const updateSkill = async (skill: ISkill) => {
+export const updateSkill = async (skill: ISkill, jwtToken: string) => {
   const response = await fetch(API_ROUTES.skill.update, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${jwtToken}`,
     },
     body: JSON.stringify(skill),
   })
@@ -36,9 +38,12 @@ export const updateSkill = async (skill: ISkill) => {
   return data
 }
 
-export const deleteSkill = async (id: number) => {
+export const deleteSkill = async (id: number, jwtToken: string) => {
   const response = await fetch(`${API_ROUTES.skill.delete}/${id}`, {
     method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${jwtToken}`,
+    },
   })
   const data = (await response.json()) as ISkill
   return data

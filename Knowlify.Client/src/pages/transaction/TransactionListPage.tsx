@@ -8,20 +8,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { ArrowUpRight } from 'lucide-react'
 
 export default function TransactionListPage() {
   const { transactions } = useTransaction()
 
   return (
-    <div className='flex min-h-screen w-full flex-col'>
+    <div className='flex min-h-screen w-full flex-col text-center'>
       <main>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Id</TableHead>
-              <TableHead>Fecha</TableHead>
-              <TableHead>Creditos</TableHead>
-              <TableHead>Acciones</TableHead>
+              <TableHead className='text-center'>Id</TableHead>
+              <TableHead className='text-center'>Fecha</TableHead>
+              <TableHead className='text-center'>Creditos</TableHead>
+              <TableHead className='text-center'>Acciones</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -33,7 +35,11 @@ export default function TransactionListPage() {
                 </TableCell>
                 <TableCell>{transaction.credits}</TableCell>
                 <TableCell>
-                  <Link to={`/transaction/${transaction.id}`}>Ver</Link>
+                  <Button asChild size='sm' className='' variant='default'>
+                    <Link to={`/transaction/${transaction.id}`}>
+                      Ver <ArrowUpRight />
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}

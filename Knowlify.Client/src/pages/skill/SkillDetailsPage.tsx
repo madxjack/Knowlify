@@ -2,18 +2,22 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { useSkillDetails } from '@/hooks/skillDetails'
 import { useBarter } from '@/hooks/barter'
 import { useAuth } from '@/hooks/auth'
+import { Link } from 'react-router-dom'
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
 
 export default function SkillDetailsPage() {
   const { id } = useParams()
   const skillId = Number(id)
-  const { skill, error } = useSkillDetails(skillId)
+  const { skill } = useSkillDetails(skillId)
   const { getAllBartersBySkillId } = useBarter()
   const navigate = useNavigate()
-  const { user } = useAuth()
-
-  if (error) {
-    navigate('/error') // Redirect to a more user-friendly error page
-  }
 
   const handleTrueque = () => {}
 
@@ -22,18 +26,18 @@ export default function SkillDetailsPage() {
   return (
     <div className='min-h-screen py-10 px-5 md:px-20'>
       <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden'>
-        <div className='p-5'>
+        <div className='p-9'>
           <h1 className='text-3xl font-bold text-gray-900 mb-2'>
             Detalles de la habilidad
           </h1>
           <div className='space-y-4'>
             <Detail
-              title='Descripción:'
-              content={skill?.description || 'Información no disponible'}
+              title='ID:'
+              content={String(skill?.id) || 'Información no disponible'}
             />
             <Detail
-              title='Habilidad:'
-              content={String(skill?.id) || 'Información no disponible'}
+              title='Descripción:'
+              content={skill?.description || 'Información no disponible'}
             />
             <Detail
               title='Créditos:'
@@ -41,45 +45,49 @@ export default function SkillDetailsPage() {
             />
           </div>
         </div>
-        <div>
+        <div className='p-5'>
           {barters && barters.length > 0 ? (
             <div className='flex flex-col gap-4 mt-4'>
               <h2 className='text-lg font-semibold text-center'>
                 Trueques abiertos
               </h2>
-              <table className='w-full'>
-                <thead>
-                  <tr>
-                    <th>Descripción</th>
-                    <th>Créditos</th>
-                    <th>Fecha</th>
-                    <th>Ver detalles</th>
-                  </tr>
-                </thead>
-                <tbody className='text-center'>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className='text-left'>Descripción</TableHead>
+                    <TableHead className='text-center'>Créditos</TableHead>
+                    <TableHead className='text-center'>Fecha</TableHead>
+                    <TableHead className='text-center'>Ver detalles</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody className='text-center'>
                   {barters.map((barter) => (
-                    <tr key={barter.id}>
-                      <td>{barter.description}</td>
-                      <td>{barter.credits}</td>
-                      <td>
+                    <TableRow key={barter.id}>
+                      <TableCell className='text-left'>
+                        {barter.description}
+                      </TableCell>
+                      <TableCell>{barter.credits}</TableCell>
+                      <TableCell>
                         {new Date(barter.datePosted).toLocaleDateString()}
-                      </td>
-                      <td>
-                        <span className='inline-block text-sm font-medium py-2 px-4 hover:text-orange-400 transition-colors duration-200'>
+                      </TableCell>
+                      <TableCell>
+                        <Link
+                          to={`/barter/${barter.id}`}
+                          className='inline-block text-gray-700 text-sm font-medium py-2 px-4 hover:text-gray-500 hover:underline transition-colors duration-200 '>
                           Ver
-                        </span>
-                        {user && (
+                        </Link>
+                        {/* {user && user.id !== barter.offeredById && (
                           <button className='ml-2'>
                             <span className='inline-block text-green-600 text-sm font-medium py-2 px-4 hover:text-green-800 transition-colors duration-200'>
                               Trueque
                             </span>
                           </button>
-                        )}
-                      </td>
-                    </tr>
+                        )} */}
+                      </TableCell>
+                    </TableRow>
                   ))}
-                </tbody>
-              </table>
+                </TableBody>
+              </Table>
             </div>
           ) : (
             <p className='text-center'>No hay trueques abiertos</p>

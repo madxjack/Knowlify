@@ -8,7 +8,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { Badge } from '@/components/ui/badge'
 import { useUser } from '@/hooks/user'
+import { ArrowUpRight } from 'lucide-react'
 
 export default function BarterListPage() {
   const { barters } = useBarter()
@@ -25,6 +28,7 @@ export default function BarterListPage() {
                 <TableHead>Descripción</TableHead>
                 <TableHead>Creditos</TableHead>
                 <TableHead>Trueque ofrecido por</TableHead>
+                <TableHead>Estado</TableHead>
                 <TableHead>Acciones</TableHead>
               </TableRow>
             </TableHeader>
@@ -39,7 +43,18 @@ export default function BarterListPage() {
                       'Email no disponible'}
                   </TableCell>
                   <TableCell>
-                    <Link to={`/barter/${barter.id}`}>Ver</Link>
+                    <Badge
+                      className={`${barter.status === 'Pending' ? 'bg-slate-400' : 'bg-green-500'} text-white`}
+                      variant='outline'>
+                      {barter.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Button asChild size='sm' className='' variant='default'>
+                      <Link to={`/barter/${barter.id}`}>
+                        Ver <ArrowUpRight />
+                      </Link>
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

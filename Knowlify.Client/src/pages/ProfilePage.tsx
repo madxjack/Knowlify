@@ -1,15 +1,17 @@
-import { useForm } from 'react-hook-form'
+import { useEffect, useState } from 'react'
+import { set, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/auth'
 import { Input } from '@/components/ui/input'
 import { updateUserBasicInfo } from '@/services/user'
-import { IUser } from '@/interfaces/user'
-import { useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { User } from '@/interfaces/user'
+import { uploadImage } from '@/services/image'
 
 interface ProfileForm {
   id: string
   name: string
   email: string
+  image: FileList // Usar FileList para manejar inputs de tipo 'file'
   oldPassword: string
   newPassword: string
   confirmPassword: string
@@ -17,15 +19,20 @@ interface ProfileForm {
 
 export default function ProfilePage() {
   const { user, setUser } = useAuth()
-  const [formError, setFormError] = useState<string | null>(null)
   const navigate = useNavigate()
+  const [formError, setFormError] = useState<string | null>(null)
+
+  if (!user) {
+    return <div>Loading...</div>
+  }
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
     getValues,
-  } = useForm({
+    watch,
+    formState: { errors },
+  } = useForm<ProfileForm>({
     defaultValues: {
       id: user?.id || '',
       name: user?.name || '',
@@ -36,25 +43,78 @@ export default function ProfilePage() {
     },
   })
 
-  const onSubmit = (data: ProfileForm) => {
+  // Observar cambios en el input del archivo para manejar la subida dinámicamente
+  const imageFile = watch('image')
+
+  useEffect(() => {
+    if (imageFile && imageFile.length > 0) {
+      const fileReader = new FileReader()
+      fileReader.onload = () => {
+        // Aquí puedes hacer algo con el resultado si necesitas
+      }
+      fileReader.readAsDataURL(imageFile[0])
+    }
+  }, [imageFile])
+
+  const onSubmit = async (data: ProfileForm) => {
     setFormError(null)
-    const handleUpdateUser = async () => {
-      const response = await updateUserBasicInfo(data)
-      if (response.ok) {
-        const data = (await response.json()) as IUser
-        setUser({
-          id: data.id,
-          email: data.email,
-          name: data.name,
-        })
-        navigate('/dashboard')
-      } else {
-        setFormError(
-          'Error al actualizar el perfil: ' + (await response.text()),
+    let imageUrl
+
+    if (imageFile && imageFile.length > 0) {
+      try {
+        const uploadResponse = await uploadImage(
+          imageFile[0],
+          user?.jwtToken as string,
         )
+        if (uploadResponse.ok) {
+          const { url } = await uploadResponse.json()
+          // Actualiza el usuario con la nueva URL de la imagen
+          console.log(url)
+          imageUrl = url
+        } else {
+          const errorMessage = await uploadResponse.text()
+          setFormError('Error al subir la imagen: ' + errorMessage)
+          return
+        }
+      } catch (error: any) {
+        console.log(error)
+        setFormError('Error al subir la imagen')
+        return
       }
     }
-    handleUpdateUser()
+
+    try {
+      const newUserProfile = {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        ProfilePicture: imageUrl,
+        oldPassword: data.oldPassword,
+        newPassword: data.newPassword,
+        confirmPassword: data.confirmPassword,
+      }
+
+      const updateUserResponse = await updateUserBasicInfo(
+        newUserProfile,
+        user?.jwtToken as string,
+      )
+      if (updateUserResponse.ok) {
+        const userUpdated: User = {
+          ...user,
+          imageUrl: imageUrl,
+          name: newUserProfile.name,
+          email: newUserProfile.email,
+        }
+
+        setUser(userUpdated)
+        navigate('/dashboard')
+      } else {
+        const errorMessage = await updateUserResponse.text()
+        setFormError('Error al actualizar el perfil: ' + errorMessage)
+      }
+    } catch (error) {
+      setFormError('Error al actualizar el perfil')
+    }
   }
 
   return (
@@ -105,6 +165,31 @@ export default function ProfilePage() {
           />
           {errors.email && (
             <p className='mt-1 text-sm text-red-600'>{errors.email.message}</p>
+          )}
+        </div>
+        <div className='mb-6'>
+          <label
+            htmlFor='image'
+            className='block mb-2 text-sm font-medium text-gray-900'>
+            Imagen
+          </label>
+          <div className='flex gap-4'>
+            {user.imageUrl && (
+              <img
+                src={user.imageUrl}
+                alt='Imagen del perfil'
+                className='w-16 h-16 rounded-full'
+              />
+            )}
+            <Input
+              type='file'
+              id='image'
+              {...register('image')}
+              className='self-center block w-full px-4 py-2 text-gray-700 bg-white border rounded-md focus-visible:outline-none focus-visible:ring-1  focus-visible:ring-orange-500 focus-visible:ring-offset-0'
+            />
+          </div>
+          {errors.image && (
+            <p className='mt-1 text-sm text-red-600'>{errors.image.message}</p>
           )}
         </div>
         <div className='mb-6'>

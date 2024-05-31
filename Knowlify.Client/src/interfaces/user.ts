@@ -1,13 +1,16 @@
+//Generic User Interface
 export interface User {
   id: string
-  googleToken?: string
   jwtToken?: string
   email?: string
   name?: string
   description?: string
+  imageUrl?: string
   city?: string
   credits?: number
 }
+
+// Main user interface
 export interface IUser {
   id: string
   email: string
@@ -36,6 +39,7 @@ export interface LoginResponse {
   email: string
   name: string
   description: string
+  profilePicture?: string
   city: string
   credits: number
 }

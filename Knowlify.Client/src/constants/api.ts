@@ -12,6 +12,8 @@ const ROUTES: IApiRoutes = {
     delete: '/user',
     add: '/user',
     all: '/user/all',
+    uploadImage: '/user/image',
+    getImageUrl: '/user/sas',
   },
   skill: {
     get: '/skill',
@@ -26,6 +28,7 @@ const ROUTES: IApiRoutes = {
     delete: '/transaction',
     add: '/transaction',
     all: '/transaction/all',
+    last: '/transaction/lastTransactions',
   },
   review: {
     get: '/review',
@@ -41,6 +44,9 @@ const ROUTES: IApiRoutes = {
     add: '/barter',
     all: '/barter/all',
     GetAllBarterBySkillId: '/barter/GetAllBySkillId',
+  },
+  image: {
+    upload: '/user/image',
   },
 }
 

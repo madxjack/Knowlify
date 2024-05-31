@@ -17,12 +17,14 @@ export const useAuth = () => {
     const response = await loginWithCredentials(email, password)
     if (response.ok) {
       const data = (await response.json()) as LoginResponse
+      console.log(data)
       setUser({
         id: data.id,
         jwtToken: data.jwtToken,
         email: data.email,
         name: data.name,
         description: data.description,
+        imageUrl: data.profilePicture,
         city: data.city,
         credits: data.credits,
       })

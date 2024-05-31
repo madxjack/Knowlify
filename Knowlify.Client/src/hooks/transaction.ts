@@ -1,9 +1,10 @@
-import { getTransactions } from '../services/transaction'
+import { getLastTransactions, getTransactions } from '../services/transaction'
 import { ITransaction } from '../interfaces/transaction'
 import { useState, useEffect } from 'react'
 
 export const useTransaction = () => {
   const [transactions, setTransactions] = useState<ITransaction[]>([])
+  const [lastTransactions, setLastTransactions] = useState<ITransaction[]>([])
 
   const filterTransactionsById = (id: number) => {
     return transactions.filter((transaction) => transaction.id === id)
@@ -22,5 +23,18 @@ export const useTransaction = () => {
       .catch((err) => console.log(err))
   }, [])
 
-  return { transactions, filterTransactionsById, filterTransactionsByUserId }
+  useEffect(() => {
+    const handleGetLastTransactions = async () => {
+      const data = await getLastTransactions()
+      data.json().then((data) => setLastTransactions(data))
+    }
+    handleGetLastTransactions()
+  }, [])
+
+  return {
+    transactions,
+    lastTransactions,
+    filterTransactionsById,
+    filterTransactionsByUserId,
+  }
 }

@@ -11,11 +11,10 @@ import {
 } from '@/components/ui/dropdown-menu'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { useAuth } from '@/hooks/auth'
-import { useEffect } from 'react'
-import { User } from '@/interfaces/user'
 
 export function Header() {
-  const { user, setUser, logout } = useAuth()
+  const { user, logout } = useAuth()
+
   const pages = [
     {
       title: 'Home',
@@ -43,16 +42,6 @@ export function Header() {
     localStorage.removeItem('user')
     logout()
   }
-
-  useEffect(() => {
-    if (!user) {
-      const userData = localStorage.getItem('user')
-      if (userData) {
-        const parsedUser = JSON.parse(userData) as User
-        setUser(parsedUser)
-      }
-    }
-  }, [user, setUser])
 
   return (
     <header className='sticky top-0 flex h-16 items-center gap-4 bg-background mx-auto px-10 lg:max-w-screen-xl'>
@@ -119,8 +108,16 @@ export function Header() {
         {user && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant='secondary' size='icon' className='rounded-full'>
-                <CircleUser className='h-5 w-5' />
+              <Button variant='secondary' size='icon' className='rounded-full '>
+                {user.imageUrl ? (
+                  <img
+                    src={user.imageUrl}
+                    alt={user.name}
+                    className='rounded-full h-7 w-7'
+                  />
+                ) : (
+                  <CircleUser className='h-6 w-6' />
+                )}
                 <span className='sr-only'>Toggle user menu</span>
               </Button>
             </DropdownMenuTrigger>

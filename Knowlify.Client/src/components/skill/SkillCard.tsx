@@ -24,9 +24,10 @@ export default function SkillCard({ skill, ...props }: SkillCardProps) {
       <section>
         <h2 className='text-lg font-bold text-black/80'>{skill.name}</h2>
         <h3 className='text-sm text-black/50'>{skill.description}</h3>
+        <p className='text-sm text-black/50'>{skill.category}</p>
       </section>
-      <div className='mt-4'>
-        <span className='inline-block text-orange-600 text-sm font-medium py-2 px-4 hover:text-orange-400 transition-colors duration-200'>
+      <div className='mt-2'>
+        <span className='inline-block text-orange-600 text-sm font-medium py-2 hover:text-orange-400 transition-colors duration-200'>
           <Link to={`/skill/${skill.id}`}>Ver detalles</Link>
         </span>
       </div>

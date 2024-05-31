@@ -8,6 +8,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import SkillCard from '@/components/skill/SkillCard'
 
 export default function SkillListPage() {
   const { skills } = useSkill()
@@ -15,8 +16,14 @@ export default function SkillListPage() {
   return (
     <>
       <div className='flex min-h-screen w-full flex-col'>
-        <main>
-          <Table>
+        <main className='grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
+          {skills.map((skill) => (
+            <article>
+              <SkillCard key={skill.id} skill={skill} />
+            </article>
+          ))}
+        </main>
+        {/* <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Id</TableHead>
@@ -39,8 +46,7 @@ export default function SkillListPage() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
-        </main>
+          </Table> */}
       </div>
     </>
   )
