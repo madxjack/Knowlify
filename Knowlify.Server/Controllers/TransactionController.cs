@@ -1,5 +1,6 @@
 ﻿using Knowlify.Domain;
 using Knowlify.Domain.DTOs.Review;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knowlify.Api.Controllers
@@ -15,6 +16,7 @@ namespace Knowlify.Api.Controllers
             this.transactionDomain = transactionDomain;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddTransactionDto transactionRequest)
         {
@@ -71,6 +73,7 @@ namespace Knowlify.Api.Controllers
         //    }
         //}
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -78,6 +81,20 @@ namespace Knowlify.Api.Controllers
             {
                 var transaction = await transactionDomain.Delete(id);
                 return Ok(transaction);
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(ex.Message) { StatusCode = 500 };
+            }
+        }
+
+        [HttpGet("LastTransactions")]
+        public async Task<IActionResult> GetLastTransactions()
+        {
+            try
+            {
+                var transactions = await transactionDomain.GetLastTransactions();
+                return Ok(transactions);
             }
             catch (Exception ex)
             {

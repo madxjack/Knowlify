@@ -1,6 +1,6 @@
 ﻿using Knowlify.Domain;
 using Knowlify.Domain.DTOs.Barter;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knowlify.Api.Controllers
@@ -16,6 +16,7 @@ namespace Knowlify.Api.Controllers
             this.barterDomain = barterDomain;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(AddBarterDto barterRequest)
         {
@@ -61,6 +62,7 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(BarterDto barterRequest)
         {
@@ -76,6 +78,7 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -91,6 +94,7 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet("GetAllBySkillId/{skillId}")]
         public async Task<IActionResult> GetAllBySkillId(int skillId)
         {

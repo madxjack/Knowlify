@@ -12,6 +12,7 @@ namespace Knowlify.Data.Models
         public string Status { get; set; }
         public int Credits { get; set; }
         public int TransactionId { get; set; }
+        public string? ImageUrl { get; set; }
         public Transaction Transaction { get; set; }
         public DateTime DatePosted { get; set; } = DateTime.Now;
     }

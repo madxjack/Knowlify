@@ -156,5 +156,20 @@ namespace Knowlify.Domain
                 Date = transaction.Date
             };
         }
+
+        public async Task<IEnumerable<TransactionDto>> GetLastTransactions()
+        {
+            var transactions = await transactionRepository.GetLastTransactions(3);
+
+            return transactions.Select(t => new TransactionDto
+            {
+                Id = t.Id,
+                RequesterId = t.RequesterId,
+                ProviderId = t.ProviderId,
+                BarterId = t.BarterId,
+                Credits = t.Credits,
+                Date = t.Date
+            });
+        }
     }
 }

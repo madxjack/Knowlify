@@ -1,5 +1,6 @@
 ﻿using Knowlify.Domain;
 using Knowlify.Domain.DTOs.Skill;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knowlify.Api.Controllers
@@ -15,6 +16,7 @@ namespace Knowlify.Api.Controllers
             this.skillDomain = skillDomain;
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Add(AddSkillDto skillRequest)
         {
@@ -60,6 +62,7 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpPut]
         public async Task<IActionResult> Update(SkillDto skillRequest)
         {
@@ -75,6 +78,7 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [Authorize]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

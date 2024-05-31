@@ -19,12 +19,20 @@ namespace Knowlify.Data.Db
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 
-            //TODO: Acabar de configurar las entidades restantes con sus respectivas configuraciones
-
             modelBuilder.Entity<Skill>().HasKey(s => s.Id);
             modelBuilder.Entity<Transaction>().HasKey(t => t.Id);
             modelBuilder.Entity<Review>().HasKey(r => r.Id);
             modelBuilder.Entity<Barter>().HasKey(b => b.Id);
+
+            modelBuilder.Entity<Barter>(entity =>
+            {
+                entity.Property(b => b.ImageUrl).HasMaxLength(500);
+            });
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(u => u.ProfilePicture).HasMaxLength(500);
+            });
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SkillsOffered)

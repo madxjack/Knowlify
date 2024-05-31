@@ -21,6 +21,8 @@ namespace Knowlify.Domain
                 OfferedById = barterRequest.OfferedById,
                 SkillId = barterRequest.SkillId,
                 Description = barterRequest.Description,
+                ImageUrl = barterRequest.ImageUrl,
+                Credits = barterRequest.Credits,
                 Status = "Pending",
                 DatePosted = DateTime.Now
             };
@@ -33,6 +35,7 @@ namespace Knowlify.Domain
                 OfferedById = newBarter.OfferedById,
                 SkillId = newBarter.SkillId,
                 Description = newBarter.Description,
+                ImageUrl = newBarter.ImageUrl,
                 Credits = newBarter.Credits,
                 Status = newBarter.Status,
                 DatePosted = newBarter.DatePosted
@@ -54,6 +57,7 @@ namespace Knowlify.Domain
                 OfferedById = barter.OfferedById,
                 SkillId = barter.SkillId,
                 Description = barter.Description,
+                ImageUrl = barter.ImageUrl,
                 Status = barter.Status,
                 Credits = barter.Credits,
                 DatePosted = barter.DatePosted
@@ -70,6 +74,7 @@ namespace Knowlify.Domain
                 OfferedById = barter.OfferedById,
                 SkillId = barter.SkillId,
                 Description = barter.Description,
+                ImageUrl = barter.ImageUrl,
                 Status = barter.Status,
                 Credits = barter.Credits,
                 DatePosted = barter.DatePosted
@@ -88,6 +93,7 @@ namespace Knowlify.Domain
             barter.OfferedById = barterRequest.OfferedById;
             barter.SkillId = barterRequest.SkillId;
             barter.Description = barterRequest.Description;
+            barter.ImageUrl = barterRequest.ImageUrl;
             barter.Status = barterRequest.Status;
             barter.Credits = barterRequest.Credits;
 
@@ -99,6 +105,7 @@ namespace Knowlify.Domain
                 OfferedById = barter.OfferedById,
                 SkillId = barter.SkillId,
                 Description = barter.Description,
+                ImageUrl = barter.ImageUrl,
                 Credits = barter.Credits,
                 Status = barter.Status,
                 DatePosted = barter.DatePosted
@@ -127,6 +134,7 @@ namespace Knowlify.Domain
                 OfferedById = barter.OfferedById,
                 SkillId = barter.SkillId,
                 Description = barter.Description,
+                ImageUrl = barter.ImageUrl,
                 Status = barter.Status,
                 Credits = barter.Credits,
                 DatePosted = barter.DatePosted

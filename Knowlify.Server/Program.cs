@@ -9,6 +9,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Knowlify.Domain;
+using Knowlify.Services.AzureBlobStorage;
+using Azure.Storage.Blobs;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -84,7 +86,9 @@ builder.Services.AddScoped<SkillDomain>();
 builder.Services.AddScoped<IBarterRepository, BarterRepository>();
 builder.Services.AddScoped<BarterDomain>();
 builder.Services.AddSingleton<JwtTokenService, JwtTokenService>();
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddSingleton<AzureBlobStorage>();
+builder.Services.AddSingleton(new BlobServiceClient(builder.Configuration["AzureBlobStorage:ConnectionString"]));
+builder.Services.AddSingleton<BlobService>();
 builder.Services.AddControllers();
 
 
@@ -110,13 +114,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 })
 
 .AddCookie();
-
-//.AddGoogle(options =>
-//{
-//    options.ClientId = clientId;
-//    options.ClientSecret = clientSecret;
-//    options.SaveTokens = true;
-//});
 
 builder.Services.AddAuthorization();
 

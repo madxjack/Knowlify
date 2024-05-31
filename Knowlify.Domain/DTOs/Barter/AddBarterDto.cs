@@ -8,6 +8,7 @@ namespace Knowlify.Domain.DTOs.Barter
         public string Description { get; set; }
         public string Status { get; set; }
         public int Credits { get; set; } = 0;
+        public string ImageUrl { get; set; }
         public int TransactionId { get; set; }
         public DateTime DatePosted { get; set; } = DateTime.Now;
     }

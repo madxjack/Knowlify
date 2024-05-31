@@ -1,9 +1,11 @@
-﻿using Knowlify.Data.Models;
+﻿using Knowlify.Services.AzureBlobStorage;
+using Knowlify.Data.Models;
 using Knowlify.Domain.DTOs.User;
 using Knowlify.Infraestructure.Abstract;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Http;
 
 namespace Knowlify.Domain
 {
@@ -12,13 +14,16 @@ namespace Knowlify.Domain
         private readonly IUserRepository _userRepository;
         private readonly IConfiguration _configuration;
         private readonly UserManager<User> _userManager;
+        private readonly AzureBlobStorage storageService;
+        private readonly BlobService blobService;
 
-
-        public UserDomain(IUserRepository userRepository, UserManager<User> userManager, IConfiguration configuration)
+        public UserDomain(IUserRepository userRepository, UserManager<User> userManager, IConfiguration configuration, AzureBlobStorage storageService, BlobService blobService)
         {
             _userRepository = userRepository;
             _configuration = configuration;
             _userManager = userManager;
+            this.storageService = storageService;
+            this.blobService = blobService;
         }
 
         public async Task<UserLoginResponseDto> Login(UserLoginDto user)
@@ -45,6 +50,7 @@ namespace Knowlify.Domain
                 Email = existingUser.Email,
                 Name = existingUser.Name,
                 Description = existingUser.Description,
+                ProfilePicture = existingUser.ProfilePicture,
                 City = existingUser.City,
                 Credits = existingUser.Credits
             };
@@ -90,7 +96,7 @@ namespace Knowlify.Domain
             };
 
             return userResponse;
-        }   
+        }
 
         public async Task<UserDto> Get(string email)
         {
@@ -183,7 +189,7 @@ namespace Knowlify.Domain
             {
                 throw new Exception("User not found");
             }
-            var result =  await _userManager.UpdateAsync(user);
+            var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
             {
@@ -205,9 +211,10 @@ namespace Knowlify.Domain
             return await _userRepository.Update(user);
         }
 
-        public async Task<UserDto> UpdateBasicProfileInfo (UserProfileUpdateDto user)
+        public async Task<UserDto> UpdateBasicProfileInfo(UserProfileUpdateDto user)
         {
-            if(string.IsNullOrWhiteSpace(user.NewPassword) || string.IsNullOrWhiteSpace(user.OldPassword)) {
+            if (string.IsNullOrWhiteSpace(user.NewPassword) || string.IsNullOrWhiteSpace(user.OldPassword))
+            {
                 throw new Exception("Password cannot be empty.");
             }
             var existingUser = await _userManager.FindByIdAsync(user.Id);
@@ -227,10 +234,11 @@ namespace Knowlify.Domain
                 throw new Exception("Error updating password: " + errors);
             }
 
+            existingUser.ProfilePicture = string.IsNullOrEmpty(user.ProfilePicture) ? existingUser.ProfilePicture : user.ProfilePicture;
             existingUser.Name = user.Name;
             existingUser.Email = user.Email;
 
-            var resultUpdate =  await _userManager.UpdateAsync(existingUser);
+            var resultUpdate = await _userManager.UpdateAsync(existingUser);
 
             if (!resultUpdate.Succeeded)
             {
@@ -253,6 +261,68 @@ namespace Knowlify.Domain
             };
 
             return userResponse;
+        }
+
+        public async Task<string> UploadImage(IFormFile file)
+        {
+            try
+            {
+                if (file == null)
+                {
+                    throw new ArgumentNullException(nameof(file));
+                }
+
+                var fileName = $"{Guid.NewGuid()}-{file.FileName}";
+
+                using (var stream = file.OpenReadStream())
+                {
+                    var url = await storageService.UploadFileAsync("knowlify", fileName, stream);
+                    if (string.IsNullOrEmpty(url))
+                    {
+                        throw new InvalidOperationException("Error uploading image");
+                    }
+                    return url;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<Stream> GetImage(string fileName)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(fileName))
+                {
+                    throw new ArgumentNullException(nameof(fileName));
+                }
+
+                var stream = await storageService.GetFileAsync("knowlify", fileName);
+                if (stream == null)
+                {
+                    throw new InvalidOperationException("Error getting image");
+                }
+
+                return stream;
+
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
+        public string GetImageSasUrl(string fileName)
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                throw new ArgumentNullException(nameof(fileName));
+            }
+
+            var sasUrl = blobService.GetBlobSasUri("knowlify", fileName);
+            return sasUrl;
         }
     }
 }

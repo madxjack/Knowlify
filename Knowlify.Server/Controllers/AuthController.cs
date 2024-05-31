@@ -14,37 +14,6 @@ namespace Knowlify.Api.Controllers
         {
             _userDomain = userDomain;
         }
-        //[HttpGet("login")]
-        //public IActionResult Login()
-        //{
-        //    var authenticationProperties = new AuthenticationProperties
-        //    {
-        //        RedirectUri = Url.Action("Callback")
-        //    };
-
-        //    return Challenge(authenticationProperties, GoogleDefaults.AuthenticationScheme);
-        //}
-
-        //[HttpGet("callback")]
-        //public async Task<IActionResult> Callback()
-        //{
-        //    var authenticateResult = await HttpContext.AuthenticateAsync(GoogleDefaults.AuthenticationScheme);
-
-        //    if (!authenticateResult.Succeeded)
-        //        return BadRequest(); // o manejar según sea necesario
-
-        //    var accessToken = authenticateResult.Properties.GetTokenValue("access_token");
-        //    var idToken = authenticateResult.Properties.GetTokenValue("id_token");
-
-        //    Console.WriteLine($"Access Token: {accessToken}");
-        //    Console.WriteLine($"Id Token: {idToken}");
-
-        //    var emailClaim = authenticateResult.Principal.FindFirst(ClaimTypes.Email).Value;
-
-        //    var token = _jwtTokenService.GenerateToken(emailClaim, _configuration);
-
-        //    return Ok(new { Token = token, Email = emailClaim, AccessToken = accessToken, IdToken = idToken });
-        //}
 
         [HttpPost]
         [Route("register")]
