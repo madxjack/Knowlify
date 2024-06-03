@@ -7,8 +7,6 @@
   align-items: flex-start;
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
-
-  padding: 50px 0;
 }
 .ag-courses_item {
   margin: 0 15px 30px;

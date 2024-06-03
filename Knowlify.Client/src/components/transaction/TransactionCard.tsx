@@ -21,7 +21,7 @@ export default function TrasactionCard({
   return (
     <div
       {...props}
-      className={`${props.className} w-full max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden`}>
+      className={`flex flex-col w-full max-w-sm mx-auto bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl ${props.className}`}>
       {/* {transaction.image && (
         <img
           className="w-full h-48 object-cover"
@@ -30,24 +30,26 @@ export default function TrasactionCard({
           loading="lazy"
         />
       )} */}
-      <div className='p-5'>
+      <div className='p-5 flex flex-col flex-1 gap-2'>
         <h2 className='text-xl font-semibold text-gray-900'>
           {requester?.name} &rarr; {provider?.name}
         </h2>
-        <p className='text-gray-500'>
+        <p className='text-gray-500 flex-1'>
           <span className=''>{barter?.description}</span>
         </p>
-        <p className='text-gray-500'>
-          Credits:{' '}
-          <span className='font-medium text-black'>{transaction.credits}</span>
+        <p className='font-medium text-black'>
+          {transaction.credits} créditos.
         </p>
         <p className='text-gray-500 text-sm'>
-          {new Date(transaction.date).toLocaleDateString()}
+          Fecha:{' '}
+          <span className='font-medium text-black'>
+            {new Date(transaction.date).toLocaleDateString()}
+          </span>
         </p>
       </div>
       <div className='px-5 py-2 bg-gray-50 flex justify-end items-center'>
         <span className='text-sm  text-orange-700 font-medium py-2 px-4 rounded hover:text-orange-500 '>
-          <Link to={`/transaction/${transaction.id}`}>View Details</Link>
+          <Link to={`/transaction/${transaction.id}`}>Ver detalles</Link>
         </span>
       </div>
     </div>

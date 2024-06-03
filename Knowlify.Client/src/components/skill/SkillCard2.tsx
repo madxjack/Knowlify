@@ -18,9 +18,7 @@ export default function SkillCard2({
     <div {...props} className={`${props.className || ''} ag-courses-item`}>
       <div className='ag-courses_box'>
         <div className='ag-courses_item shadow-lg'>
-          <Link
-            to={`/skill/${skill.id}`}
-            className='ag-courses-item_link border'>
+          <Link to={`/skill/${skill.id}`} className='ag-courses-item_link'>
             <div className='ag-courses-item_img'>
               <ImageWithSkeleton src={skill.imageUrl} alt={skill.name} />
             </div>
