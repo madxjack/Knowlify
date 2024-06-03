@@ -11,6 +11,7 @@ using System.Text;
 using Knowlify.Domain;
 using Knowlify.Services.AzureBlobStorage;
 using Azure.Storage.Blobs;
+using Knowlify.Data.Seeders;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -117,61 +118,69 @@ builder.Services.AddAuthorization();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", builder =>
-        builder.WithOrigins("https://localhost:5173")
+        builder.WithOrigins(["https://localhost:5173", "https://agreeable-mud-00348d503.5.azurestaticapps.net"])
                .AllowAnyHeader()
                .AllowAnyMethod());
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen(c =>
-//{
-//    c.SwaggerDoc("v1", new() { Title = "Knowlify.Server", Version = "v1" });
-//    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-//    {
-//        Description = "Provide a valid token",
-//        Name = "Authorization",
-//        In = ParameterLocation.Header,
-//        Type = SecuritySchemeType.Http,
-//        Scheme = "Bearer",
-//        BearerFormat = "JWT"
-//    });
-
-//    c.AddSecurityRequirement(new OpenApiSecurityRequirement
-//    {
-//        {
-//            new OpenApiSecurityScheme
-//            {
-//                Reference = new OpenApiReference
-//                {
-//                    Type = ReferenceType.SecurityScheme,
-//                    Id = "Bearer"
-//                }
-//            },
-//            new List<string>()
-//        }
-//    });
-//});
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+    c.SwaggerDoc("v1", new() { Title = "Knowlify.Api", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Provide a valid token",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = "Bearer",
+        BearerFormat = "JWT"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new List<string>()
+        }
+    });
 });
+//builder.Services.AddSwaggerGen(c =>
+//{
+//    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+//});
+
+
 
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
+    Console.WriteLine($"Current Environment: {app.Environment.EnvironmentName}");
+
     var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    var services = scope.ServiceProvider;
     try
     {
-        if (context.Database.CanConnect() == false)
-        {
-            Console.WriteLine("Database not found");
-            return;
-        }
         context.Database.EnsureCreated();
         context.Database.Migrate();
-        //await DataSeeder.SeedData(context);
-        //Console.WriteLine("Database created and seeded");
+
+        if (app.Environment.IsDevelopment())
+        {
+            var userManager = services.GetRequiredService<UserManager<User>>();
+            var skillRepository = services.GetRequiredService<ISkillRepository>();
+            var seeder = new DataSeeder(userManager, skillRepository);
+            await seeder.SeedUsers();
+            await seeder.SeedSkills();
+            Console.WriteLine("Database created and seeded");
+        }
     }
     catch (Exception ex)
     {

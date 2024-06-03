@@ -13,6 +13,8 @@ namespace Knowlify.Data.Models
         public int Rating { get; set; }
         public string RevieweeId { get; set; }
         public User Reviewee { get; set; }
+        public Barter Barter { get; set; }
+        public int BarterId { get; set; }
         public string Comment { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
          

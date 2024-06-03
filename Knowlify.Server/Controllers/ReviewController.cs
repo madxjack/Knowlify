@@ -1,6 +1,5 @@
 ﻿using Knowlify.Domain;
 using Knowlify.Domain.DTOs.Review;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Knowlify.Api.Controllers
@@ -87,5 +86,18 @@ namespace Knowlify.Api.Controllers
             }
         }
 
+        [HttpGet("ByBarter/{barterId}")]
+        public async Task<IActionResult> GetByBarter(int barterId)
+        {
+            try
+            {
+                var reviews = await reviewDomain.GetAllByBarterId(barterId);
+                return Ok(reviews);
+            }
+            catch (Exception ex)
+            {
+                return new ObjectResult(ex.Message) { StatusCode = 500 };
+            }
+        }
     }
 }

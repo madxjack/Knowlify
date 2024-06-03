@@ -21,6 +21,7 @@ namespace Knowlify.Domain
                 RevieweeId = ReviewRequest.RevieweeId,
                 Rating = ReviewRequest.Rating,
                 ReviewerId = ReviewRequest.ReviewerId,
+                BarterId = ReviewRequest.BarterId,
                 Comment = ReviewRequest.Comment,
                 Date = DateTime.Now
             };
@@ -33,6 +34,7 @@ namespace Knowlify.Domain
                 ReviewerId = newReview.ReviewerId,
                 Rating = newReview.Rating,
                 RevieweeId = newReview.RevieweeId,
+                BarterId = newReview.BarterId,
                 Comment = newReview.Comment,
                 Date = newReview.Date
             };
@@ -53,6 +55,7 @@ namespace Knowlify.Domain
                 ReviewerId = Review.ReviewerId,
                 Rating = Review.Rating,
                 RevieweeId = Review.RevieweeId,
+                BarterId = Review.BarterId,
                 Comment = Review.Comment,
                 Date = Review.Date
             };
@@ -68,6 +71,7 @@ namespace Knowlify.Domain
                 ReviewerId = r.ReviewerId,
                 Rating = r.Rating,
                 RevieweeId = r.RevieweeId,
+                BarterId = r.BarterId,
                 Comment = r.Comment,
                 Date = r.Date
             });
@@ -95,6 +99,7 @@ namespace Knowlify.Domain
                 ReviewerId = Review.ReviewerId,
                 Rating = Review.Rating,
                 RevieweeId = Review.RevieweeId,
+                BarterId = Review.BarterId,
                 Comment = Review.Comment,
                 Date = Review.Date
             };
@@ -117,9 +122,26 @@ namespace Knowlify.Domain
                 ReviewerId = Review.ReviewerId,
                 Rating = Review.Rating,
                 RevieweeId = Review.RevieweeId,
+                BarterId = Review.BarterId,
                 Comment = Review.Comment,
                 Date = Review.Date
             };
+        }
+
+        public async Task<IEnumerable<ReviewDto>> GetAllByBarterId(int id)
+        {
+            var Reviews = await ReviewRepository.GetAllByBarterId(id);
+
+            return Reviews.Select(r => new ReviewDto
+            {
+                Id = r.Id,
+                ReviewerId = r.ReviewerId,
+                Rating = r.Rating,
+                RevieweeId = r.RevieweeId,
+                BarterId = r.BarterId,
+                Comment = r.Comment,
+                Date = r.Date
+            });
         }
     }
 }

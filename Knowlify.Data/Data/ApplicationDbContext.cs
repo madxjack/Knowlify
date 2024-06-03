@@ -34,6 +34,11 @@ namespace Knowlify.Data.Db
                 entity.Property(u => u.ProfilePicture).HasMaxLength(500);
             });
 
+            modelBuilder.Entity<Skill>(entity =>
+            {
+                entity.Property(s => s.ImageUrl).HasMaxLength(500);
+            });
+
             modelBuilder.Entity<User>()
                 .HasMany(u => u.SkillsOffered)
                 .WithMany();
@@ -64,6 +69,12 @@ namespace Knowlify.Data.Db
                 .HasOne(r => r.Reviewee)
                 .WithMany()
                 .HasForeignKey(r => r.RevieweeId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Review>()
+                .HasOne(r => r.Barter)
+                .WithMany()
+                .HasForeignKey(r => r.BarterId)
                 .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<Barter>()

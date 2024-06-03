@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Knowlify.Infraestructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240523163418_BarterChanges")]
-    partial class BarterChanges
+    [Migration("20240603112220_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -42,6 +42,10 @@ namespace Knowlify.Infraestructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("OfferedById")
                         .IsRequired()
@@ -74,6 +78,9 @@ namespace Knowlify.Infraestructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("BarterId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Comment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -93,6 +100,8 @@ namespace Knowlify.Infraestructure.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BarterId");
 
                     b.HasIndex("RevieweeId");
 
@@ -116,6 +125,11 @@ namespace Knowlify.Infraestructure.Migrations
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -223,8 +237,8 @@ namespace Knowlify.Infraestructure.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("ProfilePicture")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
@@ -433,6 +447,12 @@ namespace Knowlify.Infraestructure.Migrations
 
             modelBuilder.Entity("Knowlify.Data.Models.Review", b =>
                 {
+                    b.HasOne("Knowlify.Data.Models.Barter", "Barter")
+                        .WithMany()
+                        .HasForeignKey("BarterId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
                     b.HasOne("Knowlify.Data.Models.User", "Reviewee")
                         .WithMany()
                         .HasForeignKey("RevieweeId")
@@ -444,6 +464,8 @@ namespace Knowlify.Infraestructure.Migrations
                         .HasForeignKey("ReviewerId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("Barter");
 
                     b.Navigation("Reviewee");
 

@@ -19,7 +19,8 @@ namespace Knowlify.Domain
             {
                 Name = skillRequest.Name,
                 Description = skillRequest.Description,
-                Category = skillRequest.Category
+                Category = skillRequest.Category,
+                ImageUrl = skillRequest.ImageUrl
             };
 
             await skillRepository.Add(newSkill);
@@ -29,7 +30,8 @@ namespace Knowlify.Domain
                 Id = newSkill.Id,
                 Name = newSkill.Name,
                 Description = newSkill.Description,
-                Category = newSkill.Category
+                Category = newSkill.Category,
+                ImageUrl = skillRequest.ImageUrl
             };
         }
 
@@ -42,7 +44,8 @@ namespace Knowlify.Domain
                 Id = skill.Id,
                 Name = skill.Name,
                 Description = skill.Description,
-                Category = skill.Category
+                Category = skill.Category,
+                ImageUrl = skill.ImageUrl
             });
         }
 
@@ -55,7 +58,8 @@ namespace Knowlify.Domain
                 Id = skill.Id,
                 Name = skill.Name,
                 Description = skill.Description,
-                Category = skill.Category
+                Category = skill.Category,
+                ImageUrl = skill.ImageUrl
             };
         }
 
@@ -66,6 +70,7 @@ namespace Knowlify.Domain
             skillToUpdate.Name = skill.Name;
             skillToUpdate.Description = skill.Description;
             skillToUpdate.Category = skill.Category;
+            skillToUpdate.ImageUrl = skill.ImageUrl;
 
             await skillRepository.Update(skillToUpdate);
 
@@ -74,7 +79,8 @@ namespace Knowlify.Domain
                 Id = skillToUpdate.Id,
                 Name = skillToUpdate.Name,
                 Description = skillToUpdate.Description,
-                Category = skillToUpdate.Category
+                Category = skillToUpdate.Category,
+                ImageUrl = skillToUpdate.ImageUrl
             };
         }
 
@@ -89,7 +95,8 @@ namespace Knowlify.Domain
                 Id = skill.Id,
                 Name = skill.Name,
                 Description = skill.Description,
-                Category = skill.Category
+                Category = skill.Category,
+                ImageUrl = skill.ImageUrl
             };
         }
     }

@@ -46,6 +46,8 @@ namespace Knowlify.Domain
                 userRequesterUpdated = await userDomain.UpdateCredits(newTransaction.RequesterId, -newTransaction.Credits);
                 userProviderUpdated = await userDomain.UpdateCredits(newTransaction.ProviderId, newTransaction.Credits);
                 barter = await barterDomain.UpdateAfterTransaction(newTransaction.BarterId, newTransaction, "Accepted");
+                Console.WriteLine("User Requester Updated: " + userRequesterUpdated);
+                Console.WriteLine("User Provider Updated: " + userProviderUpdated);
             }
             catch
             {
