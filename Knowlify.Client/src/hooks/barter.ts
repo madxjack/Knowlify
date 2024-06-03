@@ -1,6 +1,6 @@
 import { getBarters } from '../services/barter'
 import { IBarter } from '../interfaces/barter'
-import { useState, useEffect, useMemo } from 'react'
+import { useState, useEffect } from 'react'
 
 export const useBarter = () => {
   const [barters, setBarters] = useState<IBarter[]>([])

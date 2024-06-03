@@ -1,4 +1,4 @@
-import { getReviews, getReviewsByBarter } from '@/services/review'
+import { getReviewsByBarter } from '@/services/review'
 import { IReview } from '@/interfaces/review'
 import { useState, useEffect } from 'react'
 
