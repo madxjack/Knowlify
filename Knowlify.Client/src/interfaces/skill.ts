@@ -3,4 +3,5 @@ export interface ISkill {
   name: string
   description: string
   category: string
+  imageUrl: string
 }

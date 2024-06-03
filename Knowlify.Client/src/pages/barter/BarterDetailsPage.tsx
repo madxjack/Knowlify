@@ -5,15 +5,20 @@ import { useAuth } from '@/hooks/auth'
 import { addTransaction } from '@/services/transaction'
 import { deleteBarter } from '@/services/barter'
 import { useSkill } from '@/hooks/skill'
+import { useReviews } from '@/hooks/review'
+import { useTransaction } from '@/hooks/transaction'
+import AddReviewForm from '@/components/review/addReviewForm'
 
 export default function BarterDetailsPage() {
   const { id } = useParams()
+  const { user } = useAuth()
   const barterId = Number(id)
   const { barter, error } = useBarterDetails(barterId)
   const { findUserById } = useUser()
   const { findSkillById } = useSkill()
+  const { findTransactionByBarterId } = useTransaction()
+  const { reviews } = useReviews(barterId)
   const navigate = useNavigate()
-  const { user } = useAuth()
 
   if (!barter || !user) {
     return // Redirect to a more user-friendly error page
@@ -28,8 +33,8 @@ export default function BarterDetailsPage() {
   const handleAcceptBarter = async () => {
     const response = await addTransaction(
       {
-        requesterId: user?.id,
-        providerId: barter?.offeredById,
+        requesterId: barter?.offeredById,
+        providerId: user?.id,
         barterId: barter?.id,
         credits: barter?.credits,
       },
@@ -37,6 +42,7 @@ export default function BarterDetailsPage() {
     )
 
     if (response.ok) {
+      console.log(await response.json())
       navigate(-1)
     } else {
       console.log(await response.json())
@@ -54,7 +60,7 @@ export default function BarterDetailsPage() {
   }
 
   return (
-    <div className='min-h-screen py-10 px-5 md:px-20'>
+    <div className='py-10 px-5 md:px-20'>
       <div className='max-w-md mx-auto bg-white shadow-lg shadow-black/40 border-t-2 border-b-orange-500  rounded-lg overflow-hidden'>
         <div className='p-5'>
           <h1 className='text-3xl font-bold text-gray-900 mb-2'>
@@ -94,6 +100,41 @@ export default function BarterDetailsPage() {
                   : 'Información no disponible'
               }
             />
+          </div>
+          <div className='mt-4'>
+            <h2 className='text-lg font-semibold'>Reviews</h2>
+            {reviews && reviews.length > 0 ? (
+              reviews.map((review) => (
+                <article className='flex flex-col'>
+                  <section className='flex gap-2'>
+                    <p className='font-semibold'>Autor: </p>
+                    <p className='text-gray-600'>
+                      {findUserById(review.reviewerId)?.name}
+                    </p>
+                  </section>
+                  <section className='flex gap-2'>
+                    <p className='font-semibold'>Fecha de publicación: </p>
+                    <p className='text-gray-600'>
+                      {new Date(review.date).toLocaleDateString()}
+                    </p>
+                  </section>
+                  <p className='text-gray-600'>{review.comment}</p>
+                </article>
+              ))
+            ) : (
+              <p className='text-gray-600'>No hay reviews</p>
+            )}
+            {user?.id !== barter.offeredById &&
+              user?.id ===
+                findTransactionByBarterId(barter?.id)?.providerId && (
+                <div className='mt-4'>
+                  <AddReviewForm
+                    reviewerId={user?.id}
+                    barterId={barter?.id}
+                    revieweeId={barter?.offeredById}
+                  />
+                </div>
+              )}
           </div>
         </div>
         <div className='flex flex-col gap-4 bg-gray-100 p-5 rounded-b-lg'>

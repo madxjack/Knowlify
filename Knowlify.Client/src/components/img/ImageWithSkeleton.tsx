@@ -17,7 +17,6 @@ function ImageWithSkeleton({ src, alt, className }: ImageWithSkeletonProps) {
         alt={alt}
         onLoad={() => setLoaded(true)}
         className={`transition-opacity duration-500 ease-in-out ${className}`}
-        style={{ width: '100%', height: 'auto' }}
         loading='lazy'
       />
     </>

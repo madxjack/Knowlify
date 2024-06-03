@@ -5,6 +5,7 @@ export interface IReview {
   reviewerId: string
   rating: number
   revieweeId: string
+  barterId: number
   comment: string
   date: Date
 }

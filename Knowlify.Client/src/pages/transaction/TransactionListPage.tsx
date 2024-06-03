@@ -15,7 +15,7 @@ export default function TransactionListPage() {
   const { transactions } = useTransaction()
 
   return (
-    <div className='flex min-h-screen w-full flex-col text-center'>
+    <div className='flex flex-col text-center'>
       <main>
         <Table>
           <TableHeader>

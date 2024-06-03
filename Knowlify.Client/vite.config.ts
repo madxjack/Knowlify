@@ -3,10 +3,15 @@ import react from '@vitejs/plugin-react-swc'
 import path from 'path'
 import fs from 'fs'
 import child_process from 'child_process'
+import { env } from 'process'
 
 // Determinar la carpeta base dependiendo del entorno de usuario
-const baseFolder = process.env.APPDATA || `${process.env.HOME}/.aspnet/https`
+const baseFolder =
+  env.APPDATA !== undefined && env.APPDATA !== ''
+    ? `${env.APPDATA}/ASP.NET/https`
+    : `${env.HOME}/.aspnet/https`
 
+console.log(baseFolder)
 const certificateName = 'Knowlify.Client'
 const certFilePath = path.join(baseFolder, `${certificateName}.pem`)
 const keyFilePath = path.join(baseFolder, `${certificateName}.key`)

@@ -1,5 +1,5 @@
 // export const API_URL = 'https://localhost:7273/api'
-export const API_URL = 'https://knowlifyapi.azurewebsites.net/api'
+export const API_URL = import.meta.env.VITE_API_URL
 
 const ROUTES: IApiRoutes = {
   auth: {
@@ -37,6 +37,7 @@ const ROUTES: IApiRoutes = {
     delete: '/review',
     add: '/review',
     all: '/review/all',
+    ByBarterId: '/review/ByBarter',
   },
   barter: {
     get: '/barter',

@@ -47,7 +47,7 @@ export default function DashboardPage() {
 
   return (
     <>
-      <div className='flex min-h-screen w-full flex-col'>
+      <div className='flex flex-grow w-full flex-col'>
         <main className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8'>
           <div className='grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4'>
             <Card x-chunk='dashboard-01-chunk-0'>
@@ -90,7 +90,7 @@ export default function DashboardPage() {
             </Card>
             <Link
               to='/barter/create'
-              className='text-white font-semibold text-center py-4 bg-orange-600 hover:bg-orange-500 transition duration-300 self-center mb-4 shadow-lg rounded-lg'>
+              className='text-white font-semibold text-center py-4 bg-orange-500 hover:bg-orange-400 transition duration-300 self-center mb-4 shadow-lg rounded-lg'>
               Nuevo trueque +
             </Link>
           </div>
@@ -119,7 +119,7 @@ export default function DashboardPage() {
                     <TableRow>
                       <TableHead>Descripción</TableHead>
                       <TableHead className='hidden md:table-cell'>
-                        Date
+                        Fecha
                       </TableHead>
                       <TableHead>Creditos</TableHead>
                       <TableHead className='text-right'>Acciones</TableHead>
@@ -205,8 +205,8 @@ export default function DashboardPage() {
                             {new Date(transaction.date).toLocaleDateString()}
                           </TableCell>
                           <TableCell
-                            className={`${transaction.requesterId === user.id ? 'text-green-500' : 'text-red-500'}`}>
-                            {transaction.requesterId === user.id ? '+ ' : '- '}
+                            className={`${transaction.providerId === user.id ? 'text-green-500' : 'text-red-500'}`}>
+                            {transaction.providerId === user.id ? '+ ' : '- '}
                             {transaction.credits}
                           </TableCell>
                           <TableCell>

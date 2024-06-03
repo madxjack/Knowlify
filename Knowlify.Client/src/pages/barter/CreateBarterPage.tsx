@@ -99,8 +99,6 @@ export default function CreateBarterPage() {
         imageUrl: imageUrl,
       }
 
-      console.log(newBarter)
-
       addBarter(newBarter, user?.jwtToken as string)
         .then((response) => {
           if (response.ok) {
@@ -192,6 +190,13 @@ export default function CreateBarterPage() {
                   pattern: {
                     value: /^[0-9]+$/,
                     message: 'Debes ingresar un número mayor entero.',
+                  },
+                  validate: (value) => {
+                    const userCredits = user?.credits ?? 0
+                    return (
+                      value <= userCredits ||
+                      `Los créditos no pueden ser mayores que tu credito actual (${userCredits})`
+                    )
                   },
                 })}
                 className='focus-visible:outline-none focus-visible:ring-1  focus-visible:ring-orange-500 focus-visible:ring-offset-0'

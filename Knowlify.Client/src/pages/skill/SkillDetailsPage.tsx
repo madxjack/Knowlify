@@ -10,6 +10,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Button } from '@/components/ui/button'
+import { ArrowUpRight } from 'lucide-react'
 
 export default function SkillDetailsPage() {
   const { id } = useParams()
@@ -23,7 +25,7 @@ export default function SkillDetailsPage() {
   const barters = getAllBartersBySkillId(skillId)
 
   return (
-    <div className='min-h-screen py-10 px-5 md:px-20'>
+    <div className='py-10 px-5 md:px-20'>
       <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden'>
         <div className='p-9'>
           <h1 className='text-3xl font-bold text-gray-900 mb-2'>
@@ -71,18 +73,15 @@ export default function SkillDetailsPage() {
                           new Date(barter.datePosted).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
-                        <Link
-                          to={`/barter/${barter.id}`}
-                          className='inline-block text-gray-700 text-sm font-medium py-2 px-4 hover:text-gray-500 hover:underline transition-colors duration-200 '>
-                          Ver
-                        </Link>
-                        {/* {user && user.id !== barter.offeredById && (
-                          <button className='ml-2'>
-                            <span className='inline-block text-green-600 text-sm font-medium py-2 px-4 hover:text-green-800 transition-colors duration-200'>
-                              Trueque
-                            </span>
-                          </button>
-                        )} */}
+                        <Button
+                          asChild
+                          size='sm'
+                          className=''
+                          variant='default'>
+                          <Link to={`/barter/${barter.id}`}>
+                            Ver <ArrowUpRight />
+                          </Link>
+                        </Button>
                       </TableCell>
                     </TableRow>
                   ))}

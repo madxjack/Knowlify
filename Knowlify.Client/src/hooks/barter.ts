@@ -21,13 +21,14 @@ export const useBarter = () => {
   }
 
   const lastBarters = (limit = 3 as number) => {
-    return useMemo(() => {
-      if (barters.length < limit) {
-        return barters
-      }
+    const bartersFiltered = barters.filter(
+      (barter) => barter.status !== 'Accepted',
+    )
+    if (bartersFiltered.length < limit) {
+      return bartersFiltered
+    }
 
-      return barters.slice(barters.length - limit, barters.length)
-    }, [barters])
+    return bartersFiltered.slice(0, limit)
   }
 
   const getAllBartersBySkillId = (skillId: number) => {

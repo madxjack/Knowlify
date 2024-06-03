@@ -11,7 +11,7 @@ export default function SkillCard({ skill, ...props }: SkillCardProps) {
     <div {...props} className={`${props.className} w-full`}>
       {/* Provisional border  */}
       <ImageWithSkeleton
-        src='/gardener.jpg'
+        src={skill.imageUrl}
         alt={skill.name}
         className='w-full object-cover aspect-square rounded-xl border-2'
       />

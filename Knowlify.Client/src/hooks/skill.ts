@@ -22,11 +22,17 @@ export const useSkill = () => {
     return skills.slice(skills.length - limit, skills.length)
   }
 
+  const findSkillBySimilarName = (name: string) => {
+    return skills.find((skill) =>
+      skill.name.toLowerCase().includes(name.toLowerCase()),
+    )
+  }
+
   useEffect(() => {
     getSkills()
       .then((data) => setSkills(data))
       .catch((err) => console.log(err))
   }, [])
 
-  return { skills, findSkillById, lastSkills }
+  return { skills, findSkillById, lastSkills, findSkillBySimilarName }
 }

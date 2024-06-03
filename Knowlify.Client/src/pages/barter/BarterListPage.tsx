@@ -19,7 +19,7 @@ export default function BarterListPage() {
 
   return (
     <>
-      <div className='flex min-h-screen w-full flex-col'>
+      <div className='flex flex-col'>
         <main>
           <Table>
             <TableHeader>

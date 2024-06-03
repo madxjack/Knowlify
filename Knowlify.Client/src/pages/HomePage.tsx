@@ -1,23 +1,32 @@
-import SkillCard from '@/components/skill/SkillCard'
 import TransactionCard from '@/components/transaction/TransactionCard'
 import BarterCard from '@/components/barter/BarterCard'
 import { useSkill } from '@/hooks/skill'
 import { useTransaction } from '@/hooks/transaction'
 import { useBarter } from '@/hooks/barter'
 import SearchCard from '@/components/search/SearchCard'
+import SkillCard2 from '@/components/skill/SkillCard2'
 
 export default function HomePage() {
-  const { skills, lastSkills } = useSkill()
+  const { lastSkills } = useSkill()
   const { lastTransactions } = useTransaction()
   const { lastBarters } = useBarter()
 
   const numBarterCards = 3
-  console.log(skills)
+
+  const mapCategoryColor = {
+    Hogar: 'sky',
+    Jardineria: 'green',
+    Enseñanza: 'blue',
+    Administración: 'red',
+    Tecnología: 'purple',
+    Desarrollo: 'yellow',
+    Otros: 'gray',
+  }
 
   return (
     <div className='flex flex-col gap-10'>
       <header>
-        <div className='flex gap-10'>
+        <div className='flex flex-col gap-10 lg:flex-row'>
           <div>
             <h1 className='text-2xl font-bold'>
               Comparte tus habilidades con gente de todo el mundo
@@ -41,10 +50,19 @@ export default function HomePage() {
           <header>
             <h1 className='text-3xl font-semibold'>Habilidades destacadas</h1>
           </header>
-          <main className='flex flex-col md:flex-row md:gap-8 items-center justify-between'>
+          <main className='grid grid-cols-1 md:grid-cols-3'>
             {/* only 3 skills */}
             {lastSkills().map((skill) => (
-              <SkillCard key={skill.id} skill={skill} />
+              <article key={skill.id}>
+                <SkillCard2
+                  skill={skill}
+                  bgColor={
+                    mapCategoryColor[
+                      skill.category as keyof typeof mapCategoryColor
+                    ]
+                  }
+                />
+              </article>
             ))}
           </main>
         </section>
@@ -55,7 +73,7 @@ export default function HomePage() {
               Últimos trueques realizados
             </h1>
           </header>
-          <main className='flex flex-col md:flex-row md:gap-8 items-center justify-between'>
+          <main className='grid grid-cols-1 gap-10 md:grid-cols-3'>
             {lastTransactions.slice(0, 3).map((transaction) => (
               <TransactionCard key={transaction.id} transaction={transaction} />
             ))}
@@ -66,7 +84,7 @@ export default function HomePage() {
           <header>
             <h1 className='text-3xl font-semibold'>Trueques abiertos</h1>
           </header>
-          <main className='flex flex-col md:flex-row md:gap-8 items-center justify-between'>
+          <main className='grid grid-cols-1 gap-10 md:grid-cols-3'>
             {lastBarters(numBarterCards).map((barter) => (
               <BarterCard key={barter.id} barter={barter} />
             ))}

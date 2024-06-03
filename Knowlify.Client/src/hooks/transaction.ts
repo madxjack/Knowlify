@@ -17,6 +17,10 @@ export const useTransaction = () => {
     )
   }
 
+  const findTransactionByBarterId = (id: number) => {
+    return transactions.find((transaction) => transaction.barterId === id)
+  }
+
   useEffect(() => {
     getTransactions()
       .then((data) => setTransactions(data))
@@ -36,5 +40,6 @@ export const useTransaction = () => {
     lastTransactions,
     filterTransactionsById,
     filterTransactionsByUserId,
+    findTransactionByBarterId,
   }
 }

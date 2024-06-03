@@ -19,7 +19,7 @@ import ProtectedRoutes from './pages/auth/ProtectedRoutes'
 
 function App() {
   return (
-    <div className="app flex flex-col max-h-screen min-h-screen font-[Circular, -Apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif] text-black/80">
+    <div className="app min-h-screen flex flex-col font-[Circular, -Apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif] text-black/80">
       <Router>
         <div className='border-b'>{<Header />}</div>
         <main className='flex-1 '>

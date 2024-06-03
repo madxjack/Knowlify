@@ -14,11 +14,11 @@ export default function BarterCard({ barter, ...props }: BarterCardProps) {
   return (
     <div
       {...props}
-      className={`${props.className} card w-full bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300`}>
+      className={`card w-full bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300 ${props.className || ''}`}>
       <ImageWithSkeleton
-        src='/noImage.jpg'
+        src={barter.imageUrl || '/placeholder.png'}
         alt={barter.description}
-        className='w-full h-48 object-cover'
+        className='w-full h-60 object-cover p-4'
       />
       <section className='p-4'>
         <div className='text-xs text-gray-400 space-y-2'>
