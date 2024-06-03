@@ -1,7 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { useSkillDetails } from '@/hooks/skillDetails'
 import { useBarter } from '@/hooks/barter'
-import { useAuth } from '@/hooks/auth'
 import { Link } from 'react-router-dom'
 import {
   Table,
@@ -19,7 +18,7 @@ export default function SkillDetailsPage() {
   const { getAllBartersBySkillId } = useBarter()
   const navigate = useNavigate()
 
-  const handleTrueque = () => {}
+  // const handleTrueque = () => {}
 
   const barters = getAllBartersBySkillId(skillId)
 
@@ -68,7 +67,8 @@ export default function SkillDetailsPage() {
                       </TableCell>
                       <TableCell>{barter.credits}</TableCell>
                       <TableCell>
-                        {new Date(barter.datePosted).toLocaleDateString()}
+                        {barter.datePosted &&
+                          new Date(barter.datePosted).toLocaleDateString()}
                       </TableCell>
                       <TableCell>
                         <Link

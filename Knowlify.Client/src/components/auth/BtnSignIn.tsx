@@ -1,8 +1,8 @@
 import { useEffect } from 'react'
-import { useAuth } from '@/hooks/useAuth'
+import { useAuth } from '@/hooks/auth'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
-import { LoginResponse } from '@/interfaces'
+import { LoginResponse } from '@/interfaces/user'
 
 export function BtnSignIn() {
   const { user, setUser } = useAuth()
@@ -27,8 +27,8 @@ export function BtnSignIn() {
   return (
     <>
       {user ? (
-        <div className="flex gap-2 text-white">
-          <p className="content-center">{user?.name}</p>
+        <div className='flex gap-2 text-white'>
+          <p className='content-center'>{user?.name}</p>
           <Button onClick={logOut}>Sign Out</Button>
         </div>
       ) : (

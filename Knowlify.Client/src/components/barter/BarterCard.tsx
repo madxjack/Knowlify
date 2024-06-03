@@ -31,7 +31,11 @@ export default function BarterCard({ barter, ...props }: BarterCardProps) {
         <div className='text-xs text-gray-400 space-y-2'>
           <p>{`Skill ID: ${barter.skillId}`}</p>
           <p>{`Credits: ${barter.credits}`}</p>
-          <p>{`Posted on: ${new Date(barter.datePosted).toLocaleDateString()}`}</p>
+          {barter.datePosted && (
+            <p>
+              {`Posted on: ${new Date(barter.datePosted).toLocaleDateString()}`}
+            </p>
+          )}
         </div>
         <div className='mt-4'>
           <span className='inline-block text-orange-600 text-sm font-medium py-2 px-4 hover:text-orange-400 transition-colors duration-200'>

@@ -9,7 +9,6 @@ import { useSkill } from '@/hooks/skill'
 import { addBarter } from '@/services/barter'
 import { useEffect, useState } from 'react'
 import { uploadImage } from '@/services/image'
-import { IBarter } from '@/interfaces/barter'
 
 interface CreateBarterForm {
   offeredById: string
@@ -246,6 +245,7 @@ export default function CreateBarterPage() {
 
       <div className='mt-6'>
         <Button type='submit'>Crear</Button>
+        {formError && <p className='text-red-500'>{formError}</p>}
       </div>
     </form>
   )

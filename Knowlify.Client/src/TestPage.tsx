@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { getSkills, getSkill } from './services/skill'
-import { ISkill } from './interfaces/skill'
 
 export default function TestPage() {
   useEffect(() => {
@@ -16,9 +15,9 @@ export default function TestPage() {
   }, [])
 
   return (
-    <div className="flex flex-col items-center justify-center h-screen">
-      <h1 className="text-4xl font-bold">Test Page</h1>
-      <p className="text-lg">This is a test page to test the API endpoints.</p>
+    <div className='flex flex-col items-center justify-center h-screen'>
+      <h1 className='text-4xl font-bold'>Test Page</h1>
+      <p className='text-lg'>This is a test page to test the API endpoints.</p>
     </div>
   )
 }

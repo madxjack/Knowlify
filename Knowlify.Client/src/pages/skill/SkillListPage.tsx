@@ -1,5 +1,4 @@
 import { useSkill } from '@/hooks/skill'
-import SkillCard from '@/components/skill/SkillCard'
 import SkillCard2 from '@/components/skill/SkillCard2'
 
 export default function SkillListPage() {

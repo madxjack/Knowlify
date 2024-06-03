@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { set, useForm } from 'react-hook-form'
+import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/hooks/auth'
 import { Input } from '@/components/ui/input'

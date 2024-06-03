@@ -135,7 +135,8 @@ export default function DashboardPage() {
                         <TableRow key={barter.id}>
                           <TableCell>{barter.description}</TableCell>
                           <TableCell className='hidden md:table-cell'>
-                            {new Date(barter.datePosted).toLocaleDateString()}
+                            {barter.datePosted &&
+                              new Date(barter.datePosted).toLocaleDateString()}
                           </TableCell>
                           <TableCell className='text-right'>
                             {barter.credits}

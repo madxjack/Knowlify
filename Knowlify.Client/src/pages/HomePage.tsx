@@ -5,8 +5,6 @@ import { useSkill } from '@/hooks/skill'
 import { useTransaction } from '@/hooks/transaction'
 import { useBarter } from '@/hooks/barter'
 import SearchCard from '@/components/search/SearchCard'
-import { getLastTransactions } from '@/services/transaction'
-import { useEffect } from 'react'
 
 export default function HomePage() {
   const { skills, lastSkills } = useSkill()
