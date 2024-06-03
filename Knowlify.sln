@@ -24,7 +24,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{D454
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Knowlify.Domain", "Knowlify.Domain\Knowlify.Domain.csproj", "{66FF3840-5BFC-43D0-8207-7435749A65C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Knowlify.Services", "Knowlify.Services\Knowlify.Services.csproj", "{22494EC5-78AB-4BCD-A7BD-8FA67E63C788}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Knowlify.Services", "Knowlify.Services\Knowlify.Services.csproj", "{22494EC5-78AB-4BCD-A7BD-8FA67E63C788}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
