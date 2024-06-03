@@ -1,5 +1,5 @@
 // export const API_URL = 'https://localhost:7273/api'
-export const API_URL = 'knowlifyapi.azurewebsites.net/api'
+export const API_URL = 'https://knowlifyapi.azurewebsites.net/api'
 
 const ROUTES: IApiRoutes = {
   auth: {
