@@ -17,6 +17,9 @@ export default function TransactionListPage() {
   return (
     <div className='flex flex-col text-center'>
       <main>
+        <h1 className='text-3xl mb-4 font-semibold text-center'>
+          Lista de Transacciones
+        </h1>
         <Table>
           <TableHeader>
             <TableRow>

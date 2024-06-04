@@ -21,6 +21,9 @@ export default function BarterListPage() {
     <>
       <div className='flex flex-col'>
         <main>
+          <h1 className='text-3xl mb-4 font-semibold text-center'>
+            Lista de Trueques
+          </h1>
           <Table>
             <TableHeader>
               <TableRow>

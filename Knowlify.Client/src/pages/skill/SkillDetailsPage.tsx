@@ -28,9 +28,18 @@ export default function SkillDetailsPage() {
     <div className='py-10 px-5 md:px-20'>
       <div className='max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden'>
         <div className='p-9'>
-          <h1 className='text-3xl font-bold text-gray-900 mb-2'>
-            Detalles de la habilidad
-          </h1>
+          <div className='flex gap-4'>
+            <h1 className='text-3xl font-bold text-gray-900 mb-2 flex-1 self-center'>
+              {skill?.name}
+            </h1>
+            <div className='max-w-xs'>
+              <img
+                src={skill?.imageUrl}
+                alt='Imagen de la habilidad'
+                className='object-cover p-4'
+              />
+            </div>
+          </div>
           <div className='space-y-4'>
             <Detail
               title='ID:'

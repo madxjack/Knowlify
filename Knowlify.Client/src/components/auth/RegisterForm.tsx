@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label'
 import { useAuth } from '@/hooks/auth'
 import { IUserRegister } from '@/interfaces/user'
 import { useState } from 'react'
+import { Textarea } from '../ui/textarea'
 
 export function RegisterForm() {
   const navigate = useNavigate()
@@ -90,10 +91,9 @@ export function RegisterForm() {
           </div>
           <div className='grid gap-2'>
             <Label htmlFor='description'>Descripción</Label>
-            <Input
+            <Textarea
               id='description'
               name='description'
-              type='text'
               placeholder='Describe brevemente tus intereses'
             />
           </div>
