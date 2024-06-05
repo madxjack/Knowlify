@@ -44,7 +44,7 @@ export function Header() {
   }
 
   return (
-    <header className='sticky top-0 flex h-16 items-center gap-4 bg-background mx-auto px-10 lg:max-w-screen-xl'>
+    <header className='sticky top-0 flex h-16 items-center gap-4 mx-auto px-10 lg:max-w-screen-xl'>
       <h1 className='flex-1 text-3xl font-bold tracking-tight text-foreground text-orange-600'>
         <Link to='/' className='block'>
           Knowlify
@@ -58,7 +58,7 @@ export function Header() {
               to={page.href}
               className={({ isActive }) =>
                 `transition-colors hover:text-foreground ${
-                  isActive ? 'text-foreground' : 'text-muted-foreground'
+                  isActive ? 'text-black' : 'text-muted-foreground'
                 }`
               }>
               {page.title}

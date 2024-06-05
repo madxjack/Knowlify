@@ -21,7 +21,9 @@ function App() {
   return (
     <div className="app min-h-screen flex flex-col font-[Circular, -Apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif] text-black/80">
       <Router>
-        <div className='border-b'>{<Header />}</div>
+        <div className='border-b sticky top-0 z-10 bg-white/90 backdrop-blur-sm'>
+          {<Header />}
+        </div>
         <main className='flex-1 '>
           <div className='px-10 mx-auto pt-10 pb-10 lg:max-w-screen-xl'>
             <Routes>
